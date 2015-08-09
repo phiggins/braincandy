@@ -14,7 +14,7 @@ map = File.readlines(DICT).
   map(&:downcase).
   group_by {|word| word.each_char.sort.join }
 
-subsets = input_chars.size.
+subsets = (1..input_chars.size).to_a.
   flat_map { |n| input_chars.combination(n).to_a }.
   map(&:sort).
   map(&:join).
