@@ -9,18 +9,13 @@ else
   ARGV.first.each_char.to_a
 end
 
-map = File.readlines(DICT).
-  map(&:chomp).
-  map(&:downcase).
-  group_by {|word| word.each_char.sort.join }
+words = File.read(DICT).downcase.split("\n")
 
-subsets = (1..input_chars.size).to_a.
-  flat_map { |n| input_chars.combination(n).to_a }.
-  map(&:sort).
-  map(&:join).
+permutations = (1..input_chars.size).to_a.
+  flat_map { |n| input_chars.permutation(n).to_a.map(&:join) }.
   uniq
 
-matching_words = subsets.flat_map {|subset| map[subset] }.compact
+matching_words = words & permutations
 
 puts "Using input characters: #{input_chars.join(", ")}"
 puts
