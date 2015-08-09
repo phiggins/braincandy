@@ -22,5 +22,12 @@ subsets = (1..input_chars.size).to_a.
 
 matching_words = subsets.flat_map {|subset| map[subset] }.compact
 
-p input_chars
-p matching_words
+puts "Using input characters: #{input_chars.join(", ")}"
+puts
+
+if matching_words.any?
+  puts "Found matching words:"
+  puts matching_words.join("\n")
+else
+  puts "No matching words. :("
+end
