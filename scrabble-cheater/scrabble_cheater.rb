@@ -4,16 +4,10 @@ else
   ARGV.first.each_char.to_a
 end
 
-words = File.readlines("/usr/share/dict/words").
+map = File.readlines("/usr/share/dict/words").
   map(&:chomp).
-  map(&:downcase)
-
-map = Hash.new {|h,k| h[k] = [] }
-
-words.each do |word|
-  canonical = word.each_char.sort.join
-  map[canonical] << word
-end
+  map(&:downcase).
+  group_by {|word| word.each_char.sort.join }
 
 subsets = (2..input_chars.size).
   flat_map {|i| input_chars.combination(i).to_a.map(&:sort).map(&:join) }
