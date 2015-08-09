@@ -15,9 +15,12 @@ map = File.readlines(DICT).
   group_by {|word| word.each_char.sort.join }
 
 subsets = (2..input_chars.size).
-  flat_map {|i| input_chars.combination(i).to_a.map(&:sort).map(&:join) }
+  flat_map { |n| input_chars.combination(n).to_a }.
+  map(&:sort).
+  map(&:join).
+  uniq
 
-matching_words = subsets.flat_map {|subset| map[subset] }.compact.uniq
+matching_words = subsets.flat_map {|subset| map[subset] }.compact
 
 p input_chars
 p matching_words
