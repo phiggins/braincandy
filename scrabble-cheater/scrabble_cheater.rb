@@ -12,8 +12,7 @@ end
 words = File.read(DICT).downcase.split("\n")
 
 permutations = (1..input_chars.size).to_a.
-  flat_map { |n| input_chars.permutation(n).to_a.map(&:join) }.
-  uniq
+  flat_map { |n| input_chars.permutation(n).to_a.map(&:join) }
 
 matching_words = words & permutations
 
