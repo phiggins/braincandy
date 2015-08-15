@@ -22,11 +22,7 @@ main = do
   putStrLn $ intersperse ',' input_chars
   putStrLn ""
 
-  --raw_words <- readFile "dictionary.txt"
-  --let words = lines $ map toLower raw_words
-
   matching_words <- matchingWordsFromDict input_chars "dictionary.txt"
 
   putStrLn "Found matching words:"
-  --mapM_ putStrLn (matchingWords input_chars words)
   mapM_ putStrLn matching_words
