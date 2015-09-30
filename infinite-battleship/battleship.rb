@@ -25,17 +25,17 @@ end
 class Battleship < Ship ; def self.size() 4 end end
 
 class Player
-  def initialize grid_size, ships
-    @ships = ships
-    @shots = Set.new []
+  def initialize grid_size, ships, shots=[]
     @grid_size = grid_size
+    @ships = ships
+    @shots = Set.new shots
   end
 
   def incoming! point
-    old = self.dup
+    old = self.class.new @grid_size, @ships.dup, @shots.dup
     @shots << point
 
-    Shot.new self, hits - old.hits, sunk - old.sunk
+    yield Shot.new self, hits - old.hits, sunk - old.sunk, point
   end
 
   def next_move
@@ -55,7 +55,7 @@ class Player
   end
 end
 
-Shot = Struct.new :defender, :hits, :sunk do
+Shot = Struct.new :defender, :hits, :sunk, :point do
   def miss? ; hits.none? && sunk.none? ; end
   def game_over? ; defender.lost? ; end
 end
@@ -75,7 +75,6 @@ class Game
 
   def start &block
     @players.cycle.each_cons(2) do |attacker, defender|
-      p attacker
       defender.incoming! attacker.next_move, &block
     end
   end
@@ -83,6 +82,8 @@ end
 
 if __FILE__ == $0
   Game.build(1).start do |result|
+    print "#{result.point}... "
+
     result.hits.each do |ship|
       puts "Hit my #{ship.class}"
     end
